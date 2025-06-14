@@ -8,7 +8,9 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleMeetPebble = () => {
-    window.open('https://app.relevanceai.com/embed/chat-bubble.js?share-id=d7b62b/8765b50edd92-44a9-9b86-71521727508d/2eae873f-0cac-4a7f-aa24-c1ecde49edcd', '_blank');
+    // Trigger the Relevance AI chatbot using the same approach as the bottom right icon
+    const chatEvent = new CustomEvent('relevanceai:open-chat');
+    window.dispatchEvent(chatEvent);
   };
 
   return (

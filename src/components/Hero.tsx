@@ -117,7 +117,7 @@ const Hero = () => {
   const styles = getThemeStyles();
 
   const handleMeetPebble = () => {
-    // Trigger the Relevance AI chatbot
+    // Trigger the Relevance AI chatbot using the same approach as the bottom right icon
     const chatEvent = new CustomEvent('relevanceai:open-chat');
     window.dispatchEvent(chatEvent);
   };
