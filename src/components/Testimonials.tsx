@@ -5,23 +5,23 @@ import { Star, Quote } from "lucide-react";
 const Testimonials = () => {
   const testimonials = [
     {
-      name: "Jennifer Martinez",
-      role: "Working Mother",
-      content: "InfiHeal has been a lifesaver for our family. Being able to consult with doctors online has saved us so much time, especially with young kids. The doctors are professional and caring.",
+      name: "Sarah Chen",
+      role: "Creative Writer",
+      content: "Pebble has become my writing companion. The focus zone helps me concentrate, and sharing my thoughts with the community gives me inspiration and support.",
       rating: 5,
       image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=300&h=300&fit=crop&crop=face"
     },
     {
-      name: "Robert Thompson", 
-      role: "Senior Citizen",
-      content: "As a senior, getting to the doctor's office was becoming difficult. The online consultations are convenient and the doctors take time to explain everything clearly.",
+      name: "Michael Rodriguez", 
+      role: "Student",
+      content: "The music section is perfect for studying. The forest sounds help me stay calm during exams, and chatting with Pebble when I'm stressed really helps.",
       rating: 5,
       image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face"
     },
     {
-      name: "Lisa Chen",
-      role: "Business Executive",
-      content: "The lab test booking feature is fantastic. I can schedule tests around my busy schedule and get results delivered digitally. Very efficient service.",
+      name: "Emma Thompson",
+      role: "Mindfulness Practitioner",
+      content: "Forest has become my digital retreat. The thoughts sharing feature connects me with like-minded people, and Pebble's gentle guidance is so comforting.",
       rating: 5,
       image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face"
     }
@@ -31,10 +31,10 @@ const Testimonials = () => {
     <section className="py-20 bg-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">What Our Patients Say</h2>
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">Forest Community Stories</h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Real stories from real people who have experienced the convenience 
-            and quality of our healthcare services.
+            Discover how our peaceful digital sanctuary has touched the lives 
+            of people seeking mindfulness, creativity, and connection.
           </p>
         </div>
         
@@ -43,7 +43,7 @@ const Testimonials = () => {
             <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-shadow">
               <CardContent className="p-8">
                 <div className="space-y-6">
-                  <Quote className="w-8 h-8 text-blue-200" />
+                  <Quote className="w-8 h-8 text-green-200" />
                   
                   <p className="text-gray-700 leading-relaxed italic">
                     "{testimonial.content}"

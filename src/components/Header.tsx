@@ -11,28 +11,28 @@ const Header = () => {
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center space-x-2">
-          <div className="w-8 h-8 healthcare-gradient rounded-lg flex items-center justify-center">
+          <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-amber-500 rounded-lg flex items-center justify-center">
             <div className="w-4 h-4 bg-white rounded-full"></div>
           </div>
-          <span className="text-2xl font-bold text-gray-900">InfiHeal</span>
+          <span className="text-2xl font-bold text-gray-900">Forest</span>
         </div>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
-          <a href="#services" className="text-gray-600 hover:text-blue-600 transition-colors">Services</a>
-          <a href="#doctors" className="text-gray-600 hover:text-blue-600 transition-colors">Find Doctors</a>
-          <a href="#about" className="text-gray-600 hover:text-blue-600 transition-colors">About</a>
-          <a href="#contact" className="text-gray-600 hover:text-blue-600 transition-colors">Contact</a>
+          <a href="#focus" className="text-gray-600 hover:text-green-600 transition-colors">Focus Zone</a>
+          <a href="#music" className="text-gray-600 hover:text-green-600 transition-colors">Music</a>
+          <a href="#chat" className="text-gray-600 hover:text-green-600 transition-colors">Chat</a>
+          <a href="#thoughts" className="text-gray-600 hover:text-green-600 transition-colors">Thoughts</a>
         </nav>
 
         {/* Contact Info & CTA */}
         <div className="hidden md:flex items-center space-x-4">
           <div className="flex items-center space-x-2 text-sm text-gray-600">
-            <Phone className="w-4 h-4" />
-            <span>+1 (555) 123-4567</span>
+            <MessageCircle className="w-4 h-4" />
+            <span>Chat with Pebble</span>
           </div>
-          <Button className="bg-blue-600 hover:bg-blue-700">
-            Book Appointment
+          <Button className="bg-green-600 hover:bg-green-700">
+            Start Journey
           </Button>
         </div>
 
@@ -49,12 +49,12 @@ const Header = () => {
       {isMenuOpen && (
         <div className="md:hidden bg-white border-t">
           <nav className="px-4 py-4 space-y-4">
-            <a href="#services" className="block text-gray-600 hover:text-blue-600">Services</a>
-            <a href="#doctors" className="block text-gray-600 hover:text-blue-600">Find Doctors</a>
-            <a href="#about" className="block text-gray-600 hover:text-blue-600">About</a>
-            <a href="#contact" className="block text-gray-600 hover:text-blue-600">Contact</a>
-            <Button className="w-full bg-blue-600 hover:bg-blue-700">
-              Book Appointment
+            <a href="#focus" className="block text-gray-600 hover:text-green-600">Focus Zone</a>
+            <a href="#music" className="block text-gray-600 hover:text-green-600">Music</a>
+            <a href="#chat" className="block text-gray-600 hover:text-green-600">Chat</a>
+            <a href="#thoughts" className="block text-gray-600 hover:text-green-600">Thoughts</a>
+            <Button className="w-full bg-green-600 hover:bg-green-700">
+              Start Journey
             </Button>
           </nav>
         </div>
