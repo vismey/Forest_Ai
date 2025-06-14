@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Switch } from "@/components/ui/switch";
-import { Heart, Music, BookOpen, Target } from "lucide-react";
+import { Heart, Music, BookOpen, Target, Play, Pause, RotateCcw } from "lucide-react";
 
 const FocusZone = () => {
   const [mood, setMood] = useState('');
@@ -16,15 +16,52 @@ const FocusZone = () => {
   const [musicEnabled, setMusicEnabled] = useState(false);
   const [pebbleResponse, setPebbleResponse] = useState('');
   const [moodGif, setMoodGif] = useState('');
+  const [showBreathingExercise, setShowBreathingExercise] = useState(false);
+  const [breathingPhase, setBreathingPhase] = useState<'inhale' | 'hold' | 'exhale' | 'pause'>('inhale');
+  const [breathingSeconds, setBreathingSeconds] = useState(0);
+  const [isBreathingActive, setIsBreathingActive] = useState(false);
+  const [breathingCycle, setBreathingCycle] = useState(0);
 
   const moods = [
-    { value: 'happy', label: '😊 Happy', color: 'text-yellow-600', gif: '🌞✨🦋' },
-    { value: 'sad', label: '😢 Sad', color: 'text-blue-600', gif: '🌧️💙🤗' },
-    { value: 'excited', label: '🤩 Excited', color: 'text-orange-600', gif: '🎉⭐🎊' },
-    { value: 'anxious', label: '😰 Anxious', color: 'text-red-600', gif: '🌸🕯️🫂' },
-    { value: 'calm', label: '😌 Calm', color: 'text-green-600', gif: '🍃💚🧘‍♀️' },
-    { value: 'tired', label: '😴 Tired', color: 'text-purple-600', gif: '🌙💤🛌' }
+    { value: 'happy', label: '😊 Happy', color: 'text-yellow-600', gif: '🌞✨🦋', isNegative: false },
+    { value: 'sad', label: '😢 Sad', color: 'text-blue-600', gif: '🌧️💙🤗', isNegative: true },
+    { value: 'excited', label: '🤩 Excited', color: 'text-orange-600', gif: '🎉⭐🎊', isNegative: false },
+    { value: 'anxious', label: '😰 Anxious', color: 'text-red-600', gif: '🌸🕯️🫂', isNegative: true },
+    { value: 'calm', label: '😌 Calm', color: 'text-green-600', gif: '🍃💚🧘‍♀️', isNegative: false },
+    { value: 'tired', label: '😴 Tired', color: 'text-purple-600', gif: '🌙💤🛌', isNegative: true }
   ];
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    
+    if (isBreathingActive) {
+      interval = setInterval(() => {
+        setBreathingSeconds(prev => {
+          const newSeconds = prev + 1;
+          
+          // Breathing pattern: 4 seconds inhale, 4 seconds hold, 6 seconds exhale, 2 seconds pause
+          if (breathingPhase === 'inhale' && newSeconds >= 4) {
+            setBreathingPhase('hold');
+            return 0;
+          } else if (breathingPhase === 'hold' && newSeconds >= 4) {
+            setBreathingPhase('exhale');
+            return 0;
+          } else if (breathingPhase === 'exhale' && newSeconds >= 6) {
+            setBreathingPhase('pause');
+            return 0;
+          } else if (breathingPhase === 'pause' && newSeconds >= 2) {
+            setBreathingPhase('inhale');
+            setBreathingCycle(prev => prev + 1);
+            return 0;
+          }
+          
+          return newSeconds;
+        });
+      }, 1000);
+    }
+    
+    return () => clearInterval(interval);
+  }, [isBreathingActive, breathingPhase]);
 
   const handleMoodSelect = (selectedMood: string) => {
     setMood(selectedMood);
@@ -32,6 +69,7 @@ const FocusZone = () => {
     
     const selectedMoodData = moods.find(m => m.value === selectedMood);
     setMoodGif(selectedMoodData?.gif || '');
+    setShowBreathingExercise(selectedMoodData?.isNegative || false);
     
     const responses = {
       happy: "Oh, what a radiant soul you are today! 🦊✨ Your happiness is like sunshine breaking through the forest canopy, warming every creature's heart. Tell me, sweet friend, what beautiful moment has painted this joy across your spirit? Let's celebrate together! 🌞🎉",
@@ -43,6 +81,47 @@ const FocusZone = () => {
     };
     
     setPebbleResponse(responses[selectedMood as keyof typeof responses]);
+  };
+
+  const startBreathingExercise = () => {
+    setIsBreathingActive(true);
+    setBreathingPhase('inhale');
+    setBreathingSeconds(0);
+    setBreathingCycle(0);
+  };
+
+  const stopBreathingExercise = () => {
+    setIsBreathingActive(false);
+    setBreathingPhase('inhale');
+    setBreathingSeconds(0);
+  };
+
+  const resetBreathingExercise = () => {
+    setIsBreathingActive(false);
+    setBreathingPhase('inhale');
+    setBreathingSeconds(0);
+    setBreathingCycle(0);
+  };
+
+  const getBreathingInstruction = () => {
+    switch (breathingPhase) {
+      case 'inhale': return 'Breathe In...';
+      case 'hold': return 'Hold...';
+      case 'exhale': return 'Breathe Out...';
+      case 'pause': return 'Rest...';
+    }
+  };
+
+  const getPebbleBreathingSize = () => {
+    if (!isBreathingActive) return 'w-24 h-24';
+    
+    switch (breathingPhase) {
+      case 'inhale': return 'w-32 h-32';
+      case 'hold': return 'w-32 h-32';
+      case 'exhale': return 'w-20 h-20';
+      case 'pause': return 'w-24 h-24';
+      default: return 'w-24 h-24';
+    }
   };
 
   return (
@@ -89,6 +168,68 @@ const FocusZone = () => {
                         <Button size="sm" variant="outline">I need guidance 🌟</Button>
                       </div>
                     </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Breathing Exercise */}
+              {showBreathingExercise && (
+                <div className="mt-6 p-6 bg-blue-50 rounded-lg border-l-4 border-blue-400">
+                  <div className="text-center space-y-4">
+                    <h3 className="font-semibold text-blue-800 mb-4">🌸 Healing Breath with Pebble 🌸</h3>
+                    
+                    {/* Pebble Animation */}
+                    <div className="flex justify-center mb-4">
+                      <div className={`${getPebbleBreathingSize()} bg-gradient-to-br from-orange-400 to-red-500 rounded-full flex items-center justify-center shadow-lg transition-all duration-1000 ${isBreathingActive ? 'animate-pulse' : ''}`}>
+                        <div className="text-white text-2xl">🦊</div>
+                      </div>
+                    </div>
+
+                    {isBreathingActive && (
+                      <div className="space-y-2">
+                        <p className="text-2xl font-bold text-blue-700">{getBreathingInstruction()}</p>
+                        <p className="text-blue-600">Cycle: {breathingCycle}/3</p>
+                        <div className="w-full bg-blue-200 rounded-full h-2">
+                          <div 
+                            className="bg-blue-500 h-2 rounded-full transition-all duration-1000"
+                            style={{ 
+                              width: `${
+                                breathingPhase === 'inhale' ? (breathingSeconds / 4) * 100 :
+                                breathingPhase === 'hold' ? (breathingSeconds / 4) * 100 :
+                                breathingPhase === 'exhale' ? (breathingSeconds / 6) * 100 :
+                                (breathingSeconds / 2) * 100
+                              }%` 
+                            }}
+                          />
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="flex gap-2 justify-center">
+                      {!isBreathingActive ? (
+                        <Button onClick={startBreathingExercise} className="bg-blue-500 hover:bg-blue-600 text-white">
+                          <Play className="w-4 h-4 mr-2" />
+                          Start Breathing
+                        </Button>
+                      ) : (
+                        <>
+                          <Button onClick={stopBreathingExercise} variant="outline">
+                            <Pause className="w-4 h-4 mr-2" />
+                            Pause
+                          </Button>
+                          <Button onClick={resetBreathingExercise} variant="outline">
+                            <RotateCcw className="w-4 h-4 mr-2" />
+                            Reset
+                          </Button>
+                        </>
+                      )}
+                    </div>
+
+                    {breathingCycle >= 3 && (
+                      <div className="p-4 bg-green-100 rounded-lg">
+                        <p className="text-green-800 font-medium">🌟 Beautiful work! You've completed your healing breaths. How do you feel now? 🌟</p>
+                      </div>
+                    )}
                   </div>
                 </div>
               )}

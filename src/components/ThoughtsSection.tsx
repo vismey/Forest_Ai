@@ -52,10 +52,8 @@ const ThoughtsSection = () => {
         time: "Just now"
       };
       
-      if (!isPrivate) {
-        setThoughts([newThought, ...thoughts]);
-      }
-      
+      // Always add to thoughts array, but only show publicly if not private
+      setThoughts([newThought, ...thoughts]);
       setThought('');
     }
   };
@@ -147,7 +145,7 @@ const ThoughtsSection = () => {
                 <div className="space-y-6">
                   {thoughts.map((thoughtItem) => (
                     <div key={thoughtItem.id} className="group">
-                      <Card className="border-purple-100 hover:shadow-md transition-shadow bg-gradient-to-r from-white to-purple-50">
+                      <Card className={`border-purple-100 hover:shadow-md transition-shadow ${thoughtItem.author === 'You' ? 'bg-gradient-to-r from-green-50 to-purple-50 border-green-200' : 'bg-gradient-to-r from-white to-purple-50'}`}>
                         <CardContent className="p-6">
                           <p className="text-gray-700 leading-relaxed mb-4 font-light italic">
                             "{thoughtItem.content}"
@@ -155,7 +153,14 @@ const ThoughtsSection = () => {
                           
                           <div className="flex items-center justify-between">
                             <div className="text-sm text-gray-500">
-                              <div className="font-medium text-purple-600">{thoughtItem.author}</div>
+                              <div className={`font-medium ${thoughtItem.author === 'You' ? 'text-green-600' : 'text-purple-600'}`}>
+                                {thoughtItem.author}
+                                {thoughtItem.author === 'You' && (
+                                  <span className="ml-2 text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">
+                                    Your thought
+                                  </span>
+                                )}
+                              </div>
                               <div>{thoughtItem.time}</div>
                             </div>
                             
