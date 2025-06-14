@@ -5,119 +5,73 @@ import { Star, Quote } from "lucide-react";
 const Testimonials = () => {
   const testimonials = [
     {
-      name: "Jennifer Adams",
-      condition: "Hypertension Management",
+      name: "Jennifer Martinez",
+      role: "Working Mother",
+      content: "InfiHeal has been a lifesaver for our family. Being able to consult with doctors online has saved us so much time, especially with young kids. The doctors are professional and caring.",
       rating: 5,
-      text: "InfiHeal has been a game-changer for managing my blood pressure. The doctors are incredibly knowledgeable and the online consultations are so convenient. I can get my check-ups without taking time off work.",
-      location: "San Francisco, CA"
+      image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=300&h=300&fit=crop&crop=face"
     },
     {
-      name: "Robert Chen",
-      condition: "Diabetes Care",
+      name: "Robert Thompson", 
+      role: "Senior Citizen",
+      content: "As a senior, getting to the doctor's office was becoming difficult. The online consultations are convenient and the doctors take time to explain everything clearly.",
       rating: 5,
-      text: "As a diabetic, regular monitoring is crucial. The doctors here helped me create a perfect management plan. The lab test booking feature is fantastic - results come quickly and are easy to understand.",
-      location: "New York, NY"
+      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face"
     },
     {
-      name: "Maria Gonzalez",
-      condition: "Pediatric Care",
+      name: "Lisa Chen",
+      role: "Business Executive",
+      content: "The lab test booking feature is fantastic. I can schedule tests around my busy schedule and get results delivered digitally. Very efficient service.",
       rating: 5,
-      text: "Finding a good pediatrician was challenging until I found InfiHeal. Dr. Rodriguez is amazing with my kids, and the video consultations work perfectly when they're feeling unwell.",
-      location: "Los Angeles, CA"
-    },
-    {
-      name: "Thomas Wilson",
-      condition: "Mental Health Support",
-      rating: 5,
-      text: "The mental health support I've received has been outstanding. The psychiatrists are compassionate and professional. Online therapy sessions have made it so much easier to maintain regular appointments.",
-      location: "Chicago, IL"
-    },
-    {
-      name: "Sarah Johnson",
-      condition: "Dermatology Treatment",
-      rating: 5,
-      text: "I was skeptical about online dermatology consultations, but the doctors here are thorough. They helped diagnose my skin condition quickly and the prescribed treatment worked perfectly.",
-      location: "Houston, TX"
-    },
-    {
-      name: "Michael Brown",
-      condition: "General Health",
-      rating: 5,
-      text: "InfiHeal makes healthcare accessible and affordable. The doctors are professional, the platform is easy to use, and getting medicines delivered is incredibly convenient. Highly recommended!",
-      location: "Phoenix, AZ"
+      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face"
     }
   ];
 
   return (
-    <section className="py-20 bg-gradient-to-br from-blue-50 to-green-50">
+    <section className="py-20 bg-white">
       <div className="container mx-auto px-4">
-        {/* Header */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">
-            What Our Patients Say
-          </h2>
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">What Our Patients Say</h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Real stories from real patients who have experienced quality healthcare through our platform
+            Real stories from real people who have experienced the convenience 
+            and quality of our healthcare services.
           </p>
         </div>
-
-        {/* Testimonials Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        
+        <div className="grid md:grid-cols-3 gap-8">
           {testimonials.map((testimonial, index) => (
-            <Card key={index} className="bg-white shadow-lg border-0 hover:shadow-2xl transition-shadow duration-300">
-              <CardContent className="p-6">
-                {/* Quote Icon */}
-                <div className="flex items-center justify-between mb-4">
+            <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-shadow">
+              <CardContent className="p-8">
+                <div className="space-y-6">
                   <Quote className="w-8 h-8 text-blue-200" />
-                  <div className="flex items-center">
+                  
+                  <p className="text-gray-700 leading-relaxed italic">
+                    "{testimonial.content}"
+                  </p>
+                  
+                  <div className="flex items-center space-x-1">
                     {[...Array(testimonial.rating)].map((_, i) => (
                       <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
                     ))}
                   </div>
-                </div>
-
-                {/* Testimonial Text */}
-                <p className="text-gray-700 mb-6 leading-relaxed">
-                  "{testimonial.text}"
-                </p>
-
-                {/* Patient Info */}
-                <div className="border-t pt-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-semibold text-gray-900">{testimonial.name}</p>
-                      <p className="text-sm text-gray-600">{testimonial.location}</p>
+                  
+                  <div className="flex items-center space-x-4">
+                    <div className="w-12 h-12 rounded-full bg-gray-200 overflow-hidden">
+                      <img 
+                        src={testimonial.image} 
+                        alt={testimonial.name}
+                        className="w-full h-full object-cover"
+                      />
                     </div>
-                    <div className="text-right">
-                      <p className="text-sm font-medium text-blue-600">{testimonial.condition}</p>
+                    <div>
+                      <div className="font-semibold text-gray-900">{testimonial.name}</div>
+                      <div className="text-sm text-gray-600">{testimonial.role}</div>
                     </div>
                   </div>
                 </div>
               </CardContent>
             </Card>
           ))}
-        </div>
-
-        {/* Stats Section */}
-        <div className="mt-16 bg-white rounded-2xl p-8 shadow-lg">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <div>
-              <div className="text-3xl font-bold text-blue-600 mb-2">50,000+</div>
-              <div className="text-gray-600">Happy Patients</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-green-600 mb-2">4.8/5</div>
-              <div className="text-gray-600">Average Rating</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-purple-600 mb-2">1,000+</div>
-              <div className="text-gray-600">Expert Doctors</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-orange-600 mb-2">24/7</div>
-              <div className="text-gray-600">Support Available</div>
-            </div>
-          </div>
         </div>
       </div>
     </section>
