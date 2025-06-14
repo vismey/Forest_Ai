@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { Menu, Phone, MessageCircle } from "lucide-react";
+import { Menu } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -36,6 +36,13 @@ const Header = () => {
           <a href="#about" className="text-gray-600 hover:text-green-600 transition-colors font-medium tracking-wide">🌿 About</a>
         </nav>
 
+        {/* Meet Pebble Button */}
+        <div className="hidden md:flex items-center">
+          <Button className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-medium shadow-lg">
+            Meet Pebble 🦊
+          </Button>
+        </div>
+
         {/* Mobile Menu Button */}
         <button 
           className="md:hidden"
@@ -54,6 +61,9 @@ const Header = () => {
             <a href="#books" className="block text-gray-600 hover:text-green-600 font-medium">📚 Books</a>
             <a href="#thoughts" className="block text-gray-600 hover:text-green-600 font-medium">💭 Thoughts</a>
             <a href="#about" className="block text-gray-600 hover:text-green-600 font-medium">🌿 About</a>
+            <Button className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-medium">
+              Meet Pebble 🦊
+            </Button>
           </nav>
         </div>
       )}
