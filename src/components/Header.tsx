@@ -7,6 +7,10 @@ import { Link } from "react-router-dom";
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const handleMeetPebble = () => {
+    window.open('https://app.relevanceai.com/embed/chat-bubble.js?share-id=d7b62b/8765b50edd92-44a9-9b86-71521727508d/2eae873f-0cac-4a7f-aa24-c1ecde49edcd', '_blank');
+  };
+
   return (
     <header className="bg-white/95 backdrop-blur-md shadow-sm border-b sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
@@ -38,7 +42,10 @@ const Header = () => {
 
         {/* Meet Pebble Button */}
         <div className="hidden md:flex items-center">
-          <Button className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-medium shadow-lg">
+          <Button 
+            onClick={handleMeetPebble}
+            className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-medium shadow-lg"
+          >
             Meet Pebble 🦊
           </Button>
         </div>
@@ -61,7 +68,10 @@ const Header = () => {
             <a href="#books" className="block text-gray-600 hover:text-green-600 font-medium">📚 Books</a>
             <a href="#thoughts" className="block text-gray-600 hover:text-green-600 font-medium">💭 Thoughts</a>
             <a href="#about" className="block text-gray-600 hover:text-green-600 font-medium">🌿 About</a>
-            <Button className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-medium">
+            <Button 
+              onClick={handleMeetPebble}
+              className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-medium"
+            >
               Meet Pebble 🦊
             </Button>
           </nav>

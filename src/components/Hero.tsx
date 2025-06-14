@@ -21,28 +21,53 @@ const Hero = () => {
   }, [theme]);
 
   useEffect(() => {
-    // Handle background music
-    let audio: HTMLAudioElement | null = null;
+    // Handle rain ambiance sound
+    let audioContext: AudioContext | null = null;
+    let rainOscillator: OscillatorNode | null = null;
+    let gainNode: GainNode | null = null;
     
     if (musicEnabled) {
-      // Create a simple forest ambiance sound using Web Audio API
-      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-      const oscillator = audioContext.createOscillator();
-      const gainNode = audioContext.createGain();
+      // Create rain sound using Web Audio API
+      audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
       
-      oscillator.connect(gainNode);
-      gainNode.connect(audioContext.destination);
+      // Create multiple oscillators for rain effect
+      const createRainSound = () => {
+        const oscillator = audioContext!.createOscillator();
+        const gain = audioContext!.createGain();
+        const filter = audioContext!.createBiquadFilter();
+        
+        oscillator.connect(filter);
+        filter.connect(gain);
+        gain.connect(audioContext!.destination);
+        
+        // Rain-like frequency modulation
+        oscillator.frequency.setValueAtTime(Math.random() * 2000 + 100, audioContext!.currentTime);
+        oscillator.type = 'sawtooth';
+        
+        // Low-pass filter for rain effect
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(800, audioContext!.currentTime);
+        
+        gain.gain.setValueAtTime(0.02, audioContext!.currentTime);
+        
+        oscillator.start();
+        
+        // Random duration for each rain drop
+        setTimeout(() => {
+          gain.gain.exponentialRampToValueAtTime(0.001, audioContext!.currentTime + 0.1);
+          setTimeout(() => oscillator.stop(), 100);
+        }, Math.random() * 200);
+      };
       
-      oscillator.frequency.setValueAtTime(220, audioContext.currentTime);
-      oscillator.type = 'sine';
-      gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-      
-      oscillator.start();
+      // Create continuous rain effect
+      const rainInterval = setInterval(createRainSound, 50);
       
       // Clean up function
       return () => {
-        oscillator.stop();
-        audioContext.close();
+        clearInterval(rainInterval);
+        if (audioContext) {
+          audioContext.close();
+        }
       };
     }
   }, [musicEnabled]);
@@ -103,7 +128,7 @@ const Hero = () => {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   {musicEnabled ? <Volume2 className="w-4 h-4 text-blue-600" /> : <VolumeX className="w-4 h-4 text-gray-400" />}
-                  <span className={`${styles.textSecondary} transition-colors duration-500`}>Forest Ambiance</span>
+                  <span className={`${styles.textSecondary} transition-colors duration-500`}>Rain Ambiance 🌧️</span>
                 </div>
                 <Switch
                   checked={musicEnabled}
