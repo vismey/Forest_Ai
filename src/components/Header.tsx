@@ -36,17 +36,6 @@ const Header = () => {
           <a href="#about" className="text-gray-600 hover:text-green-600 transition-colors font-medium tracking-wide">🌿 About</a>
         </nav>
 
-        {/* Contact Info & CTA */}
-        <div className="hidden md:flex items-center space-x-4">
-          <Link to="/chat" className="flex items-center space-x-2 text-sm text-gray-600 hover:text-green-600 transition-colors">
-            <MessageCircle className="w-4 h-4 text-orange-500" />
-            <span className="font-light">Chat with Pebble</span>
-          </Link>
-          <Button className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-medium shadow-lg">
-            Enter Forest
-          </Button>
-        </div>
-
         {/* Mobile Menu Button */}
         <button 
           className="md:hidden"
@@ -65,10 +54,6 @@ const Header = () => {
             <a href="#books" className="block text-gray-600 hover:text-green-600 font-medium">📚 Books</a>
             <a href="#thoughts" className="block text-gray-600 hover:text-green-600 font-medium">💭 Thoughts</a>
             <a href="#about" className="block text-gray-600 hover:text-green-600 font-medium">🌿 About</a>
-            <Link to="/chat" className="block text-gray-600 hover:text-green-600 font-medium">💬 Chat with Pebble</Link>
-            <Button className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-medium">
-              Enter Forest
-            </Button>
           </nav>
         </div>
       )}
