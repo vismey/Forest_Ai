@@ -3,6 +3,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Import Google Fonts for a more elegant, calming design */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
 /* Definition of the design system. All colors, gradients, fonts, etc should be defined here. */
 
 @layer base {
@@ -46,11 +49,13 @@
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
 
-    /* Forest specific colors */
+    /* Enhanced Forest specific colors */
     --forest-green: 142 71% 45%;
     --forest-amber: 45 93% 47%;
     --forest-light-green: 142 71% 95%;
     --forest-light-amber: 45 93% 95%;
+    --forest-emerald: 160 84% 39%;
+    --forest-sage: 120 25% 65%;
   }
 
   .dark {
@@ -91,10 +96,33 @@
 
   body {
     @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    line-height: 1.6;
+  }
+
+  /* Enhanced typography for calming effect */
+  .font-serif {
+    font-family: 'Playfair Display', serif;
+  }
+
+  .font-light {
+    font-weight: 300;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
   }
 }
 
-/* Custom forest utilities */
+/* Enhanced forest utilities */
 @layer utilities {
   .forest-gradient {
     background: linear-gradient(135deg, hsl(var(--forest-green)) 0%, hsl(var(--forest-amber)) 100%);
@@ -103,4 +131,62 @@
   .forest-gradient-light {
     background: linear-gradient(135deg, hsl(var(--forest-light-green)) 0%, hsl(var(--forest-light-amber)) 100%);
   }
+
+  .forest-emerald-gradient {
+    background: linear-gradient(135deg, hsl(var(--forest-emerald)) 0%, hsl(var(--forest-green)) 100%);
+  }
+
+  .text-shadow-soft {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .backdrop-blur-soft {
+    backdrop-filter: blur(8px);
+  }
+
+  /* Gentle animations for UI elements */
+  .animate-gentle-float {
+    animation: gentle-float 3s ease-in-out infinite;
+  }
+
+  .animate-gentle-pulse {
+    animation: gentle-pulse 2s ease-in-out infinite;
+  }
+}
+
+/* Keyframes for gentle animations */
+@keyframes gentle-float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes gentle-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+/* Custom scrollbar for a more elegant look */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--forest-light-green));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--forest-green));
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--forest-emerald));
 }
