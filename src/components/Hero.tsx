@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Play, Leaf, Music, MessageCircle, Users, Volume2, VolumeX, Sun, Moon, Trees } from "lucide-react";
@@ -21,17 +20,16 @@ const Hero = () => {
   }, [theme]);
 
   useEffect(() => {
-    // Handle rain ambiance sound
+    // Handle calming rain ambiance sound
     let audioContext: AudioContext | null = null;
-    let rainOscillator: OscillatorNode | null = null;
-    let gainNode: GainNode | null = null;
+    let rainInterval: NodeJS.Timeout | null = null;
     
     if (musicEnabled) {
-      // Create rain sound using Web Audio API
+      // Create calming rain sound using Web Audio API
       audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
       
-      // Create multiple oscillators for rain effect
-      const createRainSound = () => {
+      // Create calming rain sound
+      const createCalmingRainSound = () => {
         const oscillator = audioContext!.createOscillator();
         const gain = audioContext!.createGain();
         const filter = audioContext!.createBiquadFilter();
@@ -40,31 +38,33 @@ const Hero = () => {
         filter.connect(gain);
         gain.connect(audioContext!.destination);
         
-        // Rain-like frequency modulation
-        oscillator.frequency.setValueAtTime(Math.random() * 2000 + 100, audioContext!.currentTime);
-        oscillator.type = 'sawtooth';
+        // Softer, more calming frequency range
+        oscillator.frequency.setValueAtTime(Math.random() * 800 + 200, audioContext!.currentTime);
+        oscillator.type = 'sine'; // Smoother wave type
         
-        // Low-pass filter for rain effect
+        // Low-pass filter for gentle rain effect
         filter.type = 'lowpass';
-        filter.frequency.setValueAtTime(800, audioContext!.currentTime);
+        filter.frequency.setValueAtTime(600, audioContext!.currentTime);
+        filter.Q.setValueAtTime(0.5, audioContext!.currentTime);
         
-        gain.gain.setValueAtTime(0.02, audioContext!.currentTime);
+        // Much softer volume for calming effect
+        gain.gain.setValueAtTime(0.008, audioContext!.currentTime);
         
         oscillator.start();
         
-        // Random duration for each rain drop
+        // Longer, gentler duration for each rain drop
         setTimeout(() => {
-          gain.gain.exponentialRampToValueAtTime(0.001, audioContext!.currentTime + 0.1);
-          setTimeout(() => oscillator.stop(), 100);
-        }, Math.random() * 200);
+          gain.gain.exponentialRampToValueAtTime(0.001, audioContext!.currentTime + 0.3);
+          setTimeout(() => oscillator.stop(), 300);
+        }, Math.random() * 400 + 200);
       };
       
-      // Create continuous rain effect
-      const rainInterval = setInterval(createRainSound, 50);
+      // Create continuous but sparse calming rain effect
+      rainInterval = setInterval(createCalmingRainSound, 120);
       
       // Clean up function
       return () => {
-        clearInterval(rainInterval);
+        if (rainInterval) clearInterval(rainInterval);
         if (audioContext) {
           audioContext.close();
         }
@@ -128,7 +128,7 @@ const Hero = () => {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   {musicEnabled ? <Volume2 className="w-4 h-4 text-blue-600" /> : <VolumeX className="w-4 h-4 text-gray-400" />}
-                  <span className={`${styles.textSecondary} transition-colors duration-500`}>Rain Ambiance 🌧️</span>
+                  <span className={`${styles.textSecondary} transition-colors duration-500`}>Calming Rain 🌧️</span>
                 </div>
                 <Switch
                   checked={musicEnabled}
