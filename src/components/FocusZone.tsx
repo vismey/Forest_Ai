@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -21,6 +20,14 @@ const FocusZone = () => {
   const [breathingSeconds, setBreathingSeconds] = useState(0);
   const [isBreathingActive, setIsBreathingActive] = useState(false);
   const [breathingCycle, setBreathingCycle] = useState(0);
+  
+  // Mindful moments state
+  const [showMindfulSession, setShowMindfulSession] = useState(false);
+  const [mindfulPhase, setMindfulPhase] = useState<'countdown' | 'inhale' | 'exhale'>('countdown');
+  const [mindfulSeconds, setMindfulSeconds] = useState(10);
+  const [isMindfulActive, setIsMindfulActive] = useState(false);
+  const [mindfulCycles, setMindfulCycles] = useState(0);
+  const [totalMindfulTime, setTotalMindfulTime] = useState(0);
 
   const moods = [
     { value: 'happy', label: '😊 Happy', color: 'text-yellow-600', gif: '🌞✨🦋', isNegative: false },
@@ -63,6 +70,46 @@ const FocusZone = () => {
     return () => clearInterval(interval);
   }, [isBreathingActive, breathingPhase]);
 
+  // Mindful moments timer effect
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    
+    if (isMindfulActive) {
+      interval = setInterval(() => {
+        setMindfulSeconds(prev => {
+          const newSeconds = prev + 1;
+          setTotalMindfulTime(prev => prev + 1);
+          
+          if (mindfulPhase === 'countdown' && newSeconds >= 10) {
+            setMindfulPhase('inhale');
+            return 0;
+          } else if (mindfulPhase === 'inhale' && newSeconds >= 5) {
+            setMindfulPhase('exhale');
+            setMindfulCycles(prev => prev + 1);
+            return 0;
+          } else if (mindfulPhase === 'exhale' && newSeconds >= 5) {
+            setMindfulPhase('inhale');
+            return 0;
+          }
+          
+          // Stop after 5 minutes (300 seconds)
+          if (totalMindfulTime >= 300) {
+            setIsMindfulActive(false);
+            setShowMindfulSession(false);
+            setMindfulPhase('countdown');
+            setMindfulSeconds(10);
+            setMindfulCycles(0);
+            setTotalMindfulTime(0);
+          }
+          
+          return newSeconds;
+        });
+      }, 1000);
+    }
+    
+    return () => clearInterval(interval);
+  }, [isMindfulActive, mindfulPhase, totalMindfulTime]);
+
   const handleMoodSelect = (selectedMood: string) => {
     setMood(selectedMood);
     setShowPebbleChat(true);
@@ -103,12 +150,38 @@ const FocusZone = () => {
     setBreathingCycle(0);
   };
 
+  const startMindfulSession = () => {
+    setShowMindfulSession(true);
+    setIsMindfulActive(true);
+    setMindfulPhase('countdown');
+    setMindfulSeconds(0);
+    setMindfulCycles(0);
+    setTotalMindfulTime(0);
+  };
+
+  const stopMindfulSession = () => {
+    setIsMindfulActive(false);
+    setShowMindfulSession(false);
+    setMindfulPhase('countdown');
+    setMindfulSeconds(10);
+    setMindfulCycles(0);
+    setTotalMindfulTime(0);
+  };
+
   const getBreathingInstruction = () => {
     switch (breathingPhase) {
       case 'inhale': return 'Breathe In...';
       case 'hold': return 'Hold...';
       case 'exhale': return 'Breathe Out...';
       case 'pause': return 'Rest...';
+    }
+  };
+
+  const getMindfulInstruction = () => {
+    switch (mindfulPhase) {
+      case 'countdown': return `Starting in ${10 - mindfulSeconds}...`;
+      case 'inhale': return 'Breathe In...';
+      case 'exhale': return 'Breathe Out...';
     }
   };
 
@@ -122,6 +195,22 @@ const FocusZone = () => {
       case 'pause': return 'w-24 h-24';
       default: return 'w-24 h-24';
     }
+  };
+
+  const getMindfulPebbleSize = () => {
+    if (!isMindfulActive || mindfulPhase === 'countdown') return 'w-24 h-24';
+    
+    switch (mindfulPhase) {
+      case 'inhale': return 'w-32 h-32';
+      case 'exhale': return 'w-20 h-20';
+      default: return 'w-24 h-24';
+    }
+  };
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
   return (
@@ -303,11 +392,66 @@ const FocusZone = () => {
                       <Target className="w-5 h-5 text-green-500" />
                       <h3 className="font-semibold text-gray-800">Mindful Moments ⏰</h3>
                     </div>
-                    <div className="grid grid-cols-3 gap-2">
-                      <Button variant="outline" size="sm" className="text-xs">🌸 5 min</Button>
-                      <Button variant="outline" size="sm" className="text-xs">🌿 15 min</Button>
-                      <Button variant="outline" size="sm" className="text-xs">🌳 30 min</Button>
-                    </div>
+                    
+                    {!showMindfulSession ? (
+                      <div className="grid grid-cols-3 gap-2">
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="text-xs"
+                          onClick={startMindfulSession}
+                        >
+                          🌸 5 min
+                        </Button>
+                        <Button variant="outline" size="sm" className="text-xs">🌿 15 min</Button>
+                        <Button variant="outline" size="sm" className="text-xs">🌳 30 min</Button>
+                      </div>
+                    ) : (
+                      <div className="p-6 bg-purple-50 rounded-lg border-l-4 border-purple-400">
+                        <div className="text-center space-y-4">
+                          <h3 className="font-semibold text-purple-800 mb-4">🌸 5-Minute Mindful Journey 🌸</h3>
+                          
+                          {/* Pebble Animation */}
+                          <div className="flex justify-center mb-4">
+                            <div className={`${getMindfulPebbleSize()} bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center shadow-lg transition-all duration-1000 ${isMindfulActive ? 'animate-pulse' : ''}`}>
+                              <div className="text-white text-2xl">🦊</div>
+                            </div>
+                          </div>
+
+                          <div className="space-y-2">
+                            <p className="text-2xl font-bold text-purple-700">{getMindfulInstruction()}</p>
+                            {mindfulPhase !== 'countdown' && (
+                              <p className="text-purple-600">Cycles: {mindfulCycles}</p>
+                            )}
+                            <p className="text-purple-600">Time: {formatTime(totalMindfulTime)} / 5:00</p>
+                            
+                            <div className="w-full bg-purple-200 rounded-full h-2">
+                              <div 
+                                className="bg-purple-500 h-2 rounded-full transition-all duration-1000"
+                                style={{ 
+                                  width: mindfulPhase === 'countdown' 
+                                    ? `${(mindfulSeconds / 10) * 100}%`
+                                    : `${(mindfulSeconds / 5) * 100}%`
+                                }}
+                              />
+                            </div>
+                          </div>
+
+                          <div className="flex gap-2 justify-center">
+                            <Button onClick={stopMindfulSession} variant="outline" className="text-purple-600">
+                              <Pause className="w-4 h-4 mr-2" />
+                              Stop Session
+                            </Button>
+                          </div>
+
+                          {totalMindfulTime >= 300 && (
+                            <div className="p-4 bg-green-100 rounded-lg">
+                              <p className="text-green-800 font-medium">🌟 Congratulations! You've completed your 5-minute mindful journey. How do you feel? 🌟</p>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               </ScrollArea>
