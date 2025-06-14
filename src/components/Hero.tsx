@@ -84,7 +84,7 @@ const Hero = () => {
           <div className="space-y-8">
             <div className="space-y-6">
               <h1 className={`text-5xl lg:text-7xl font-bold ${styles.textPrimary} leading-tight font-serif transition-colors duration-500`}>
-                🌲 Welcome to Your <span className="bg-gradient-to-r from-green-600 via-emerald-500 to-teal-600 bg-clip-text text-transparent">Sacred Sanctuary</span> 🌲
+                🌲 <span className="bg-gradient-to-r from-green-600 via-emerald-500 to-teal-600 bg-clip-text text-transparent">Grow Through What You Go Through</span> 🌲
               </h1>
               <p className={`text-2xl ${styles.textSecondary} leading-relaxed font-light transition-colors duration-500`}>
                 Where <span className="text-orange-600 font-medium">Pebble the Fox</span> awaits to guide your soul through 

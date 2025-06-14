@@ -68,6 +68,10 @@ const MusicSection = () => {
     setPlayingTrack(playingTrack === trackId ? null : trackId);
   };
 
+  const handleSpotifyConnect = () => {
+    window.open('https://open.spotify.com', '_blank');
+  };
+
   return (
     <section className="py-20 bg-gradient-to-br from-emerald-50 to-blue-50">
       <div className="container mx-auto px-4">
@@ -141,7 +145,10 @@ const MusicSection = () => {
               <p className="text-gray-600 mb-6 font-light">
                 Link your Spotify account to enjoy these tracks and discover more forest-inspired playlists
               </p>
-              <Button className="bg-green-600 hover:bg-green-700 px-8 py-3">
+              <Button 
+                onClick={handleSpotifyConnect}
+                className="bg-green-600 hover:bg-green-700 px-8 py-3"
+              >
                 Connect Spotify
               </Button>
             </CardContent>
