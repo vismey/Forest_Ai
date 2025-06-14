@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Play, Leaf, Music, MessageCircle, Users, Volume2, VolumeX, Sun, Moon, Trees } from "lucide-react";
@@ -234,17 +233,10 @@ const Hero = () => {
                   <div>
                     <div className={`${styles.textPrimary} font-bold text-2xl font-serif mb-2 transition-colors duration-500`}>Hello, I'm Pebble</div>
                     <div className={`${styles.textSecondary} font-light text-lg mb-4 transition-colors duration-500`}>Your Gentle Companion 🦊</div>
-                    <div className={`${styles.textSecondary} text-sm font-light italic max-w-xs mx-auto leading-relaxed mb-6 transition-colors duration-500`}>
+                    <div className={`${styles.textSecondary} text-sm font-light italic max-w-xs mx-auto leading-relaxed transition-colors duration-500`}>
                       "Welcome to this tranquil space where you can find moments of peace and reflection. 
                       I'm here to accompany you on your journey toward inner calm and mindfulness... 🌟🌲"
                     </div>
-                    <Button 
-                      onClick={handleMeetPebble}
-                      className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-medium px-6 py-2 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2 mx-auto"
-                    >
-                      <MessageCircle className="w-4 h-4" />
-                      Meet Pebble
-                    </Button>
                   </div>
                 </div>
               </div>
