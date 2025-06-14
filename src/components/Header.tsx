@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Menu, Phone, MessageCircle } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -10,7 +11,7 @@ const Header = () => {
     <header className="bg-white/95 backdrop-blur-md shadow-sm border-b sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         {/* Enhanced Logo */}
-        <div className="flex items-center space-x-3">
+        <Link to="/" className="flex items-center space-x-3">
           <div className="relative">
             {/* Forest background */}
             <div className="w-12 h-12 bg-gradient-to-br from-green-600 via-emerald-500 to-green-700 rounded-2xl flex items-center justify-center shadow-lg">
@@ -24,7 +25,7 @@ const Header = () => {
             <span className="text-3xl font-bold bg-gradient-to-r from-green-700 to-emerald-600 bg-clip-text text-transparent font-serif">Forest</span>
             <div className="text-xs text-gray-500 font-light -mt-1">with Pebble 🦊</div>
           </div>
-        </div>
+        </Link>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
@@ -37,10 +38,10 @@ const Header = () => {
 
         {/* Contact Info & CTA */}
         <div className="hidden md:flex items-center space-x-4">
-          <div className="flex items-center space-x-2 text-sm text-gray-600">
+          <Link to="/chat" className="flex items-center space-x-2 text-sm text-gray-600 hover:text-green-600 transition-colors">
             <MessageCircle className="w-4 h-4 text-orange-500" />
             <span className="font-light">Chat with Pebble</span>
-          </div>
+          </Link>
           <Button className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-medium shadow-lg">
             Enter Forest
           </Button>
@@ -64,6 +65,7 @@ const Header = () => {
             <a href="#books" className="block text-gray-600 hover:text-green-600 font-medium">📚 Books</a>
             <a href="#thoughts" className="block text-gray-600 hover:text-green-600 font-medium">💭 Thoughts</a>
             <a href="#about" className="block text-gray-600 hover:text-green-600 font-medium">🌿 About</a>
+            <Link to="/chat" className="block text-gray-600 hover:text-green-600 font-medium">💬 Chat with Pebble</Link>
             <Button className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-medium">
               Enter Forest
             </Button>
