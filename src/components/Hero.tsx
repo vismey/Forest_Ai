@@ -1,8 +1,8 @@
-
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { Play, Leaf, Music, MessageCircle, Users, ChevronDown, Volume2, VolumeX, Sun, Moon, Trees } from "lucide-react";
+import { Play, Leaf, Music, MessageCircle, Users, Volume2, VolumeX, Sun, Moon, Trees } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   const [musicEnabled, setMusicEnabled] = useState(false);
@@ -22,25 +22,20 @@ const Hero = () => {
           <div className="space-y-8">
             <div className="space-y-6">
               <h1 className="text-5xl lg:text-7xl font-bold text-gray-900 leading-tight font-serif">
-                🌲 Enter the <span className="bg-gradient-to-r from-green-600 via-emerald-500 to-teal-600 bg-clip-text text-transparent">Enchanted Forest</span> 🌲
+                🌲 Welcome to Your <span className="bg-gradient-to-r from-green-600 via-emerald-500 to-teal-600 bg-clip-text text-transparent">Sacred Sanctuary</span> 🌲
               </h1>
               <p className="text-2xl text-gray-600 leading-relaxed font-light">
                 Where <span className="text-orange-600 font-medium">Pebble the Fox</span> awaits to guide your soul through 
-                mindful adventures. Discover inner peace, share your heart, and let nature's wisdom heal your spirit. ✨🦊
+                mindful adventures. Discover inner peace, share your heart, and let nature's wisdom embrace your spirit. ✨🦊
               </p>
             </div>
             
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white text-lg px-8 py-4 font-medium shadow-xl">
-                🦊 Meet Pebble
-              </Button>
-              <Button variant="outline" size="lg" className="text-lg px-8 py-4 border-green-300 hover:bg-green-50 font-medium relative">
-                <div className="flex items-center">
-                  <Play className="w-5 h-5 mr-2" />
-                  🌳 Explore Forest
-                  <ChevronDown className="w-4 h-4 ml-2 animate-bounce" />
-                </div>
-              </Button>
+            <div className="flex justify-center">
+              <Link to="/chat">
+                <Button size="lg" className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white text-lg px-8 py-4 font-medium shadow-xl">
+                  🦊 Meet Pebble
+                </Button>
+              </Link>
             </div>
 
             {/* Controls Section */}
