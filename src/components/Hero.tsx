@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Play, Leaf, Music, MessageCircle, Users, Volume2, VolumeX, Sun, Moon, Trees } from "lucide-react";
@@ -20,51 +21,65 @@ const Hero = () => {
   }, [theme]);
 
   useEffect(() => {
-    // Handle calming rain ambiance sound
+    // Handle calming piano music
     let audioContext: AudioContext | null = null;
-    let rainInterval: NodeJS.Timeout | null = null;
+    let pianoInterval: NodeJS.Timeout | null = null;
     
     if (musicEnabled) {
-      // Create calming rain sound using Web Audio API
       audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
       
-      // Create calming rain sound
-      const createCalmingRainSound = () => {
+      // Piano notes in C major scale (frequencies)
+      const pianoNotes = [
+        261.63, // C4
+        293.66, // D4
+        329.63, // E4
+        349.23, // F4
+        392.00, // G4
+        440.00, // A4
+        493.88, // B4
+        523.25  // C5
+      ];
+      
+      const createPianoNote = (frequency: number, duration: number = 2000) => {
         const oscillator = audioContext!.createOscillator();
-        const gain = audioContext!.createGain();
-        const filter = audioContext!.createBiquadFilter();
+        const gainNode = audioContext!.createGain();
         
-        oscillator.connect(filter);
-        filter.connect(gain);
-        gain.connect(audioContext!.destination);
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext!.destination);
         
-        // Softer, more calming frequency range
-        oscillator.frequency.setValueAtTime(Math.random() * 800 + 200, audioContext!.currentTime);
-        oscillator.type = 'sine'; // Smoother wave type
+        // Piano-like sound using triangle wave
+        oscillator.type = 'triangle';
+        oscillator.frequency.setValueAtTime(frequency, audioContext!.currentTime);
         
-        // Low-pass filter for gentle rain effect
-        filter.type = 'lowpass';
-        filter.frequency.setValueAtTime(600, audioContext!.currentTime);
-        filter.Q.setValueAtTime(0.5, audioContext!.currentTime);
-        
-        // Much softer volume for calming effect
-        gain.gain.setValueAtTime(0.008, audioContext!.currentTime);
+        // Piano-like envelope (quick attack, slow decay)
+        gainNode.gain.setValueAtTime(0, audioContext!.currentTime);
+        gainNode.gain.linearRampToValueAtTime(0.1, audioContext!.currentTime + 0.1);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext!.currentTime + duration / 1000);
         
         oscillator.start();
-        
-        // Longer, gentler duration for each rain drop
-        setTimeout(() => {
-          gain.gain.exponentialRampToValueAtTime(0.001, audioContext!.currentTime + 0.3);
-          setTimeout(() => oscillator.stop(), 300);
-        }, Math.random() * 400 + 200);
+        oscillator.stop(audioContext!.currentTime + duration / 1000);
       };
       
-      // Create continuous but sparse calming rain effect
-      rainInterval = setInterval(createCalmingRainSound, 120);
+      const playPianoMelody = () => {
+        // Simple calming melody pattern
+        const melodyPattern = [0, 2, 4, 2, 0, 4, 2, 0]; // Indices for pianoNotes array
+        
+        melodyPattern.forEach((noteIndex, i) => {
+          setTimeout(() => {
+            createPianoNote(pianoNotes[noteIndex], 1500);
+          }, i * 800);
+        });
+      };
+      
+      // Play initial melody
+      playPianoMelody();
+      
+      // Repeat melody every 8 seconds
+      pianoInterval = setInterval(playPianoMelody, 8000);
       
       // Clean up function
       return () => {
-        if (rainInterval) clearInterval(rainInterval);
+        if (pianoInterval) clearInterval(pianoInterval);
         if (audioContext) {
           audioContext.close();
         }
@@ -101,6 +116,12 @@ const Hero = () => {
 
   const styles = getThemeStyles();
 
+  const handleMeetPebble = () => {
+    // Trigger the Relevance AI chatbot
+    const chatEvent = new CustomEvent('relevanceai:open-chat');
+    window.dispatchEvent(chatEvent);
+  };
+
   return (
     <section className={`${styles.background} py-20 relative overflow-hidden transition-all duration-500`}>
       <div className="container mx-auto px-4">
@@ -128,7 +149,7 @@ const Hero = () => {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   {musicEnabled ? <Volume2 className="w-4 h-4 text-blue-600" /> : <VolumeX className="w-4 h-4 text-gray-400" />}
-                  <span className={`${styles.textSecondary} transition-colors duration-500`}>Calming Rain 🌧️</span>
+                  <span className={`${styles.textSecondary} transition-colors duration-500`}>Calming Piano 🎹</span>
                 </div>
                 <Switch
                   checked={musicEnabled}
@@ -213,10 +234,17 @@ const Hero = () => {
                   <div>
                     <div className={`${styles.textPrimary} font-bold text-2xl font-serif mb-2 transition-colors duration-500`}>Hello, I'm Pebble</div>
                     <div className={`${styles.textSecondary} font-light text-lg mb-4 transition-colors duration-500`}>Your Gentle Companion 🦊</div>
-                    <div className={`${styles.textSecondary} text-sm font-light italic max-w-xs mx-auto leading-relaxed transition-colors duration-500`}>
+                    <div className={`${styles.textSecondary} text-sm font-light italic max-w-xs mx-auto leading-relaxed mb-6 transition-colors duration-500`}>
                       "Welcome to this tranquil space where you can find moments of peace and reflection. 
                       I'm here to accompany you on your journey toward inner calm and mindfulness... 🌟🌲"
                     </div>
+                    <Button 
+                      onClick={handleMeetPebble}
+                      className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-medium px-6 py-2 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2 mx-auto"
+                    >
+                      <MessageCircle className="w-4 h-4" />
+                      Meet Pebble
+                    </Button>
                   </div>
                 </div>
               </div>
