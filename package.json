@@ -3,7 +3,9 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "homepage": "https://yourusername.github.io/Forest_A/",
   "scripts": {
+    "deploy": "npm run build && gh-pages -d dist --repo https://github.com/vismey/Forest_Ai.git"
     "dev": "vite",
     "build": "vite build",
     "build:dev": "vite build --mode development",
